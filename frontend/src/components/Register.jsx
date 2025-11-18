@@ -16,6 +16,7 @@ function Register() {
     fitnessGoal: ''
   });
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
   const { register } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -27,6 +28,7 @@ function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setSuccess('');
 
     if (formData.password !== formData.confirmPassword) {
       setError('Passwords do not match');
@@ -44,7 +46,8 @@ function Register() {
     setLoading(false);
 
     if (result.success) {
-      navigate('/home');
+      setSuccess('Registration successful! Please log in with your new account.');
+      setTimeout(() => navigate('/login'), 1500);
     } else {
       setError(result.message);
     }
@@ -56,6 +59,7 @@ function Register() {
         <h1>💪 Workout Tracker</h1>
         <h2>Create Account</h2>
         {error && <div className="error-message">{error}</div>}
+        {success && <div className="success-message">{success}</div>}
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label>Name *</label>

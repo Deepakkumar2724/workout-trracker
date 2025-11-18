@@ -149,6 +149,94 @@
   border-left: 4px solid #667eea;
 }
 
+.exercise-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.exercise-header strong {
+  color: #333;
+  font-size: 1.1rem;
+}
+
+.max-weight-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.max-weight-display {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.max-weight-label,
+.max-reps-label {
+  color: #495057;
+  font-size: 0.9rem;
+}
+
+.max-weight-label strong,
+.max-reps-label strong {
+  color: #667eea;
+  font-size: 1rem;
+}
+
+.btn-edit-max {
+  background: #667eea;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-edit-max:hover {
+  background: #5568d3;
+}
+
+.max-weight-edit {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.max-weight-edit input {
+  padding: 6px 10px;
+  border: 2px solid #667eea;
+  border-radius: 6px;
+  width: 100px;
+  font-size: 0.9rem;
+}
+
+.max-weight-edit span {
+  color: #495057;
+  font-size: 0.9rem;
+}
+
+.btn-cancel-edit {
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-cancel-edit:hover {
+  background: #c82333;
+}
+
 .record-exercise strong {
   color: #333;
   display: block;

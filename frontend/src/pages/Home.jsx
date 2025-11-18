@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import TrainersList from '../components/TrainersList';
 import ExercisesList from '../components/ExercisesList';
 import MyClasses from '../components/MyClasses';
@@ -9,6 +9,19 @@ import './Home.css';
 
 function Home() {
   const [activeSection, setActiveSection] = useState('exercises');
+
+  useEffect(() => {
+    // Listen for class creation events to switch to My Classes tab
+    const handleClassCreated = () => {
+      setActiveSection('classes');
+    };
+
+    window.addEventListener('classCreated', handleClassCreated);
+    
+    return () => {
+      window.removeEventListener('classCreated', handleClassCreated);
+    };
+  }, []);
 
   return (
     <div className="home-container">
@@ -68,4 +81,3 @@ function Home() {
 }
 
 export default Home;
-

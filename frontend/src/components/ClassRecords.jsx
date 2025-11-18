@@ -4,11 +4,15 @@ import './ClassRecords.css';
 
 const API_URL = 'http://localhost:5000/api/class-records';
 
+const PERSONAL_RECORDS_API = 'http://localhost:5000/api/personal-records';
+
 function ClassRecords() {
   const [records, setRecords] = useState([]);
   const [classes, setClasses] = useState([]);
+  const [personalRecords, setPersonalRecords] = useState({});
   const [loading, setLoading] = useState(false);
   const [showForm, setShowForm] = useState(false);
+  const [editingMaxWeight, setEditingMaxWeight] = useState({});
   const [formData, setFormData] = useState({
     classId: '',
     className: '',
@@ -20,7 +24,44 @@ function ClassRecords() {
   useEffect(() => {
     fetchRecords();
     fetchClasses();
+    fetchPersonalRecords();
   }, []);
+
+  const fetchPersonalRecords = async () => {
+    try {
+      const response = await axios.get(PERSONAL_RECORDS_API);
+      const recordsMap = {};
+      response.data.forEach(record => {
+        recordsMap[record.exerciseId?._id || record.exerciseId] = record;
+      });
+      setPersonalRecords(recordsMap);
+    } catch (error) {
+      console.error('Error fetching personal records:', error);
+    }
+  };
+
+  const updateMaxWeight = async (exerciseId, exerciseName, maxWeight, maxReps) => {
+    try {
+      const response = await axios.post(PERSONAL_RECORDS_API, {
+        exerciseId,
+        exerciseName,
+        maxWeight: parseFloat(maxWeight) || 0,
+        maxReps: parseInt(maxReps) || 0
+      });
+      setPersonalRecords(prev => ({
+        ...prev,
+        [exerciseId]: response.data
+      }));
+      setEditingMaxWeight(prev => {
+        const newState = { ...prev };
+        delete newState[exerciseId];
+        return newState;
+      });
+    } catch (error) {
+      console.error('Error updating max weight:', error);
+      alert('Failed to update max weight');
+    }
+  };
 
   const fetchRecords = async () => {
     try {
@@ -109,6 +150,7 @@ function ClassRecords() {
       alert('Record saved successfully!');
       setShowForm(false);
       fetchRecords();
+      fetchPersonalRecords(); // Refresh personal records after saving
       setFormData({
         classId: '',
         className: '',
@@ -200,19 +242,83 @@ function ClassRecords() {
                 </span>
               </div>
               <div className="record-exercises">
-                {record.exercises.map((exercise, index) => (
-                  <div key={index} className="record-exercise">
-                    <strong>{exercise.name}</strong>
-                    <p>Total Weight: {exercise.totalWeight || 0} lbs</p>
-                    <div className="sets-summary">
-                      {exercise.sets?.map((set, setIndex) => (
-                        <span key={setIndex} className={set.completed ? 'set-completed' : 'set-incomplete'}>
-                          Set {set.setNumber}: {set.reps} reps × {set.weight} lbs
-                        </span>
-                      ))}
+                {record.exercises.map((exercise, index) => {
+                  const exerciseId = exercise.exerciseId?._id || exercise.exerciseId;
+                  const personalRecord = personalRecords[exerciseId];
+                  const isEditing = editingMaxWeight[exerciseId];
+                  const maxWeight = personalRecord?.maxWeight || 0;
+                  const maxReps = personalRecord?.maxReps || 0;
+                  
+                  return (
+                    <div key={index} className="record-exercise">
+                      <div className="exercise-header">
+                        <strong>{exercise.name}</strong>
+                        <div className="max-weight-section">
+                          {isEditing ? (
+                            <div className="max-weight-edit">
+                              <input
+                                type="number"
+                                placeholder="Max Weight"
+                                defaultValue={maxWeight}
+                                onBlur={(e) => {
+                                  const newWeight = parseFloat(e.target.value) || 0;
+                                  const newReps = maxReps;
+                                  if (newWeight !== maxWeight) {
+                                    updateMaxWeight(exerciseId, exercise.name, newWeight, newReps);
+                                  } else {
+                                    setEditingMaxWeight(prev => {
+                                      const newState = { ...prev };
+                                      delete newState[exerciseId];
+                                      return newState;
+                                    });
+                                  }
+                                }}
+                                onKeyPress={(e) => {
+                                  if (e.key === 'Enter') {
+                                    e.target.blur();
+                                  }
+                                }}
+                                autoFocus
+                              />
+                              <span>lbs</span>
+                              <button
+                                onClick={() => {
+                                  setEditingMaxWeight(prev => {
+                                    const newState = { ...prev };
+                                    delete newState[exerciseId];
+                                    return newState;
+                                  });
+                                }}
+                                className="btn-cancel-edit"
+                              >
+                                Cancel
+                              </button>
+                            </div>
+                          ) : (
+                            <div className="max-weight-display">
+                              <span className="max-weight-label">Max Weight: <strong>{maxWeight} lbs</strong></span>
+                              {maxReps > 0 && <span className="max-reps-label">Max Reps: <strong>{maxReps}</strong></span>}
+                              <button
+                                onClick={() => setEditingMaxWeight(prev => ({ ...prev, [exerciseId]: true }))}
+                                className="btn-edit-max"
+                              >
+                                ✏️ Edit
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                      <p>Total Weight: {exercise.totalWeight || 0} lbs</p>
+                      <div className="sets-summary">
+                        {exercise.sets?.map((set, setIndex) => (
+                          <span key={setIndex} className={set.completed ? 'set-completed' : 'set-incomplete'}>
+                            Set {set.setNumber}: {set.reps} reps × {set.weight} lbs
+                          </span>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
               {record.duration > 0 && (
                 <p className="record-duration">⏱️ {record.duration} minutes</p>

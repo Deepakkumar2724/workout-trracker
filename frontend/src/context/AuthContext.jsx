@@ -3,6 +3,11 @@ import axios from 'axios';
 
 const AuthContext = createContext();
 
+const formatUser = (data) => {
+  if (!data) return null;
+  return { ...data, id: data.id || data._id };
+};
+
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(localStorage.getItem('token'));
@@ -22,7 +27,7 @@ export const AuthProvider = ({ children }) => {
   const fetchUser = async () => {
     try {
       const response = await axios.get(`${API_URL}/users/me`);
-      setUser(response.data);
+      setUser(formatUser(response.data));
     } catch (error) {
       console.error('Error fetching user:', error);
       logout();
@@ -36,7 +41,7 @@ export const AuthProvider = ({ children }) => {
       const response = await axios.post(`${API_URL}/auth/login`, { email, password });
       const { token: newToken, user: userData } = response.data;
       setToken(newToken);
-      setUser(userData);
+      setUser(formatUser(userData));
       localStorage.setItem('token', newToken);
       axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
       return { success: true };
@@ -47,12 +52,8 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (userData) => {
     try {
-      const response = await axios.post(`${API_URL}/auth/register`, userData);
-      const { token: newToken, user: newUser } = response.data;
-      setToken(newToken);
-      setUser(newUser);
-      localStorage.setItem('token', newToken);
-      axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
+      await axios.post(`${API_URL}/auth/register`, userData);
+      // Do not auto-login after registration. User must log in manually.
       return { success: true };
     } catch (error) {
       return { success: false, message: error.response?.data?.message || 'Registration failed' };
@@ -69,7 +70,7 @@ export const AuthProvider = ({ children }) => {
   const updateUser = async (userId, userData) => {
     try {
       const response = await axios.patch(`${API_URL}/users/${userId}`, userData);
-      setUser(response.data);
+      setUser(formatUser(response.data));
       return { success: true };
     } catch (error) {
       return { success: false, message: error.response?.data?.message || 'Update failed' };

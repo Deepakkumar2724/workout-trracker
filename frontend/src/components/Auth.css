@@ -3,7 +3,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: url('https://img.freepik.com/premium-photo/illustration-fitness-equipments-design-background_916191-36299.jpg?semt=ais_hybrid&w=740')
+    center/cover fixed no-repeat;
   padding: 20px;
 }
 
@@ -95,6 +96,15 @@
   border-radius: 8px;
   margin-bottom: 20px;
   border: 1px solid #fcc;
+}
+
+.success-message {
+  background: #e6ffed;
+  color: #16753c;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border: 1px solid #8ddfa4;
 }
 
 .auth-link {

@@ -9,6 +9,7 @@ import trainerRoutes from './routes/trainers.js';
 import exerciseRoutes from './routes/exercises.js';
 import classRoutes from './routes/classes.js';
 import classRecordRoutes from './routes/classRecords.js';
+import personalRecordRoutes from './routes/personalRecords.js';
 
 dotenv.config();
 
@@ -27,6 +28,7 @@ app.use('/api/trainers', trainerRoutes);
 app.use('/api/exercises', exerciseRoutes);
 app.use('/api/classes', classRoutes);
 app.use('/api/class-records', classRecordRoutes);
+app.use('/api/personal-records', personalRecordRoutes);
 app.use('/api/workouts', workoutRoutes);
 
 // Health check

@@ -10,7 +10,8 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: url('https://img.freepik.com/premium-photo/illustration-fitness-equipments-design-background_916191-36299.jpg?semt=ais_hybrid&w=740')
+    center/cover fixed no-repeat;
   min-height: 100vh;
   padding: 20px;
 }

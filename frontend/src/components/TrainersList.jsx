@@ -51,6 +51,16 @@ function TrainersList() {
                   <span>💼 {trainer.experience} years</span>
                 </div>
                 {trainer.bio && <p className="trainer-bio">{trainer.bio}</p>}
+                {trainer.instagram && (
+                  <a 
+                    href={`https://instagram.com/${trainer.instagram}`} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="trainer-instagram"
+                  >
+                    📷 @{trainer.instagram}
+                  </a>
+                )}
               </div>
             </div>
           ))}

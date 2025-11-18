@@ -2,4 +2,47 @@
   min-height: 100vh;
 }
 
+/* Ensure the main content sits above any background overlay */
+.content-wrapper {
+  position: relative !important;
+  z-index: 99999 !important;
+  pointer-events: auto !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Make sure sections and main content are not hidden by positioning or pseudo-elements */
+.content-wrapper main,
+.content-wrapper section,
+.content-wrapper div,
+.content-wrapper * {
+  position: relative !important;
+  z-index: 99999 !important;
+  pointer-events: auto !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Lower common background/overlay selectors if present (body::before, .background-overlay, .site-bg, etc.) */
+body::before,
+.background-overlay,
+.site-bg,
+.app-background,
+.app::before,
+.app::after {
+  z-index: 0 !important;
+  pointer-events: none !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* If some elements were hidden with visibility/opacity classes, make them visible for debugging */
+.hidden,
+.hidden-by-css,
+[hidden] {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
 

@@ -13,20 +13,25 @@ function App() {
     <AuthProvider>
       <Router>
         <div className="app">
-          <Navbar />
-          <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route
-              path="/home"
-              element={
-                <ProtectedRoute>
-                  <Home />
-                </ProtectedRoute>
-              }
-            />
-            <Route path="/" element={<Navigate to="/home" replace />} />
-          </Routes>
+          <div
+            className="content-wrapper"
+            style={{ position: 'relative', zIndex: 2000 }}
+          >
+            <Navbar />
+            <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route
+                path="/home"
+                element={
+                  <ProtectedRoute>
+                    <Home />
+                  </ProtectedRoute>
+                }
+              />
+              <Route path="/" element={<Navigate to="/login" replace />} />
+            </Routes>
+          </div>
         </div>
       </Router>
     </AuthProvider>

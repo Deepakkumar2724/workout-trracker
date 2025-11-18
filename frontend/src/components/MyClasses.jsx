@@ -10,6 +10,17 @@ function MyClasses() {
 
   useEffect(() => {
     fetchClasses();
+
+    // Listen for class creation events to refresh the list
+    const handleClassCreated = () => {
+      fetchClasses();
+    };
+
+    window.addEventListener('classCreated', handleClassCreated);
+    
+    return () => {
+      window.removeEventListener('classCreated', handleClassCreated);
+    };
   }, []);
 
   const fetchClasses = async () => {
@@ -83,6 +94,9 @@ function MyClasses() {
               </div>
               {classItem.duration > 0 && (
                 <p className="class-duration">⏱️ Duration: {classItem.duration} minutes</p>
+              )}
+              {classItem.notes && classItem.notes.trim() && (
+                <p className="class-notes">📝 {classItem.notes}</p>
               )}
             </div>
           ))}

@@ -94,6 +94,16 @@
   font-weight: 600;
 }
 
+.class-notes {
+  margin-top: 10px;
+  color: #495057;
+  font-style: italic;
+  padding: 10px;
+  background: #f8f9fa;
+  border-radius: 6px;
+  border-left: 3px solid #667eea;
+}
+
 .empty-state {
   text-align: center;
   padding: 40px;

@@ -8,7 +8,7 @@ export const authenticate = (req, res, next) => {
       return res.status(401).json({ message: 'Authentication required' });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'workout-tracker-2024-secret-key-deepak-kumar');
     req.userId = decoded.userId;
     next();
   } catch (error) {

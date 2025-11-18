@@ -6,7 +6,9 @@
   "type": "module",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "add-influencers": "node scripts/addInfluencers.js",
+    "add-exercises": "node scripts/addExercises.js"
   },
   "keywords": ["workout", "tracker", "mern"],
   "author": "",

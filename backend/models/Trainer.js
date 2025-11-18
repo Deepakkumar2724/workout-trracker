@@ -30,6 +30,10 @@ const trainerSchema = mongoose.Schema({
   followers: {
     type: Number,
     default: 0
+  },
+  instagram: {
+    type: String,
+    default: ''
   }
 }, {
   timestamps: true

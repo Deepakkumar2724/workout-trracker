@@ -60,6 +60,21 @@
   line-height: 1.5;
 }
 
+.trainer-instagram {
+  display: inline-block;
+  margin-top: 10px;
+  color: #E4405F;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: color 0.3s;
+}
+
+.trainer-instagram:hover {
+  color: #C13584;
+  text-decoration: underline;
+}
+
 .empty-state {
   text-align: center;
   padding: 40px;
